@@ -1,0 +1,81 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAXSIZE 10
+struct s
+{
+    int stack[MAXSIZE];
+    int top;
+}s1;
+
+
+int a;
+void push(int);
+int pop();
+void display();
+
+void main()
+{
+   
+    s1.top =-1;
+    int pop_return;
+    for(;;)
+    {
+        int choice;
+        printf("Press:\n 1.PUSH 2.POP 3.DISPLAY 4.EXIT\n");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1: printf("enter data to be inserted\n");
+                    scanf("%d",&a);
+                    push(a);
+                    break;
+            case 2: pop_return=pop();
+                    break;
+            case 3: display();
+                    break;
+            case 4: exit(1);
+
+            default: printf("Enter appropriate choice");
+
+
+        }
+    }
+}
+
+void push(int data)
+{
+    if(s1.top==MAXSIZE-1)
+    {
+        printf("Stack is full  OVERFLOW\n");
+        exit(1);
+    }
+    else
+    {
+        s1.top++;
+        s1.stack[s1.top]=data;
+    }
+}
+int pop()
+{
+    if(s1.top==-1)
+    {
+        printf("Stack is empty-UNDERFLOW\n");
+        exit(1);
+    }
+    else
+    {
+        int p=s1.stack[s1.top];
+        s1.top--;
+        return p;
+    }
+}
+void display()
+{
+    int i;
+    printf("Stack elements are:");
+    for(i=s1.top;i>=0;i--)
+    {
+        printf("%d\t",s1.stack[i]);
+    }
+    printf("\n");
+}
