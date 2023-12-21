@@ -1,0 +1,73 @@
+#include<stdlib.h>
+#define MAXSIZE 10
+int stack[MAXSIZE];
+int top=-1;
+int a;
+void push(int);
+int pop();
+void display();
+
+void main()
+{
+    int pop_return;
+    for(;;)
+    {
+        int choice;
+        printf("Press:\n 1.PUSH 2.POP 3.DISPLAY 4.EXIT\n");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1: printf("enter data to be inserted\n");
+                    scanf("%d",&a);
+                    push(a);
+                    break;
+            case 2: pop_return=pop();
+                    break;
+            case 3: display();
+                    break;
+            case 4: exit(1);
+
+            default: printf("Enter appropriate choice");
+
+
+        }
+    }
+}
+
+void push(int data)
+{
+    if(top==MAXSIZE-1)
+    {
+        printf("Stack is full  OVERFLOW\n");
+        exit(1);
+    }
+    else
+    {
+        top++;
+        stack[top]=data;
+    }
+}
+int pop()
+{
+    if(top==-1)
+    {
+        printf("Stack is empty-UNDERFLOW\n");
+        exit(1);
+    }
+    else
+    {
+        int p=stack[top];
+        top--;
+        return p;
+    }
+}
+void display()
+{
+    int i;
+    printf("Stack elements are:");
+    for(i=top;i>=0;i--)
+    {
+        printf("%d\t",stack[i]);
+    }
+    printf("\n");
+}
