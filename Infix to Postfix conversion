@@ -1,0 +1,103 @@
+#include<stdlib.h>
+#include<stdio.h>
+#include<ctype.h>
+#define SIZE 20
+char stack[SIZE];
+int top=-1;
+
+void push(char ch);
+char pop();
+int precedence(char ch);
+
+void main()
+{
+    char postfix[SIZE],infix[SIZE];
+    printf("Enter the infix expression: \n");
+    scanf("%s",infix);
+    push('#');
+    int i=0,j=0;
+    while(infix[i]!='\0')
+    {
+        char ch=infix[i];
+        if(ch=='(')
+        {
+            push(ch);
+        }
+        else if(isalnum(ch))
+        {
+            postfix[j]=ch;
+            j++;
+        }
+        else if(ch==')')
+        {
+            while(stack[top]!='(')
+            {
+                postfix[j]=pop();
+                j++;
+            }
+            char random=pop();
+        }
+        else
+        {
+            while(precedence(stack[top])>=precedence(ch) && stack[top]!='#')
+            {
+                postfix[j]=pop();
+                j++;
+            }
+            push(ch);
+        }
+        i++;
+    }
+    while(stack[top]!='#')
+    {
+        postfix[j]=pop();
+        j++;
+    }
+    postfix[j]='\0';
+    printf("Postfix expression is %s\n",postfix);
+}
+
+void push(char c)
+{
+    if(top==SIZE-1)
+    {
+        printf("Stack is full__Overflow\n");
+    }
+    else
+    {
+        top++;
+        stack[top]=c;
+    }
+}
+char pop()
+{
+    if(top==-1)
+    {
+        printf("Stack is empty__Underflow\n");
+    }
+    else
+    {
+        return stack[top--];
+    }
+}
+int precedence(char c)
+{
+    int flag;
+    if(c=='^')
+    {
+        flag=3;
+    }
+    else if(c=='*' || c=='/')
+    {
+        flag=2;
+    }
+    else if(c=='+' || c=='-')
+    {
+        flag=1;
+    }
+    else
+    {
+        flag=0;
+    }
+    return flag;
+}
