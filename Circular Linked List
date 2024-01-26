@@ -1,0 +1,282 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node
+{
+    int data;
+    struct Node *next;
+} LL;
+
+LL *head = NULL;
+LL *tail = NULL;
+
+struct Node *createNode(int element)
+{
+    LL *new = (struct Node *)malloc(sizeof(LL));
+    if (new == NULL)
+    {
+        printf("Memory cannot be allocated");
+        exit(0);
+    }
+    else
+    {
+        new->data = element;
+        new->next = NULL;
+    }
+    return new;
+}
+
+void insertBack()
+{
+    int ele;
+    printf("Enter data to be inserted in new node\n");
+    scanf("%d", &ele);
+    LL *nn = createNode(ele);
+    if (head == NULL)
+    {
+        head = nn;
+        tail = head;
+        tail->next = head;
+    }
+    else
+    {
+        nn->next = tail->next;
+        tail->next = nn;
+        tail = nn;
+    }
+}
+
+void insertFront()
+{
+    int ele;
+    printf("Enter data to be inserted\n");
+    scanf("%d", &ele);
+    LL *nn = createNode(ele);
+    if (head == NULL)
+    {
+        head = nn;
+        tail = head;
+        tail->next = head;
+    }
+    else
+    {
+        nn->next = head;
+        head = nn;
+        tail->next = head;
+    }
+}
+
+void InsertAtPos(int pos, int ele)
+{
+    LL *nn = createNode(ele);
+    if (head == NULL)
+    {
+        head = nn;
+        tail = head;
+        tail->next = head;
+    }
+    else
+    {
+        if (pos == 1)
+        {
+            nn->next = head;
+            head = nn;
+            tail->next = head;
+        }
+        else
+        {
+            LL *temp = head;
+            int i;
+            for (i = 2; i <= pos - 1; i++)
+            {
+                temp = temp->next;
+            }
+            nn->next = temp->next;
+            temp->next = nn;
+            if (temp == tail)
+            {
+                tail = nn;
+            }
+        }
+    }
+}
+
+int deleteFront()
+{
+    int ele;
+    if (head == NULL)
+    {
+        printf("Linked list is empty\n");
+        return 0;
+    }
+    else if (head->next == head)
+    {
+        ele = head->data;
+        free(head);
+        head = NULL;
+        tail = NULL;
+    }
+    else
+    {
+        LL *temp = head;
+        head = head->next;
+        tail->next = head;
+        ele = temp->data;
+        free(temp);
+        temp = NULL;
+    }
+    return ele;
+}
+
+int deleteBack()
+{
+    int ele;
+    if (head == NULL)
+    {
+        printf("Linked list is empty\n");
+        return 0;
+    }
+    else if (head->next == head)
+    {
+        ele = head->data;
+        free(head);
+        head = NULL;
+        tail = NULL;
+    }
+    else
+    {
+        LL *prev = NULL;
+        LL *temp = head;
+        while (temp->next != head)
+        {
+            prev = temp;
+            temp = temp->next;
+        }
+        ele = temp->data;
+        prev->next = temp->next;
+        if (temp == tail)
+        {
+            tail = prev;
+        }
+        free(temp);
+        temp = NULL;
+    }
+    return ele;
+}
+
+int deleteAtPos(int pos)
+{
+    int ele;
+    if (head == NULL)
+    {
+        printf("LL is empty\n");
+    }
+    else if (pos == 1 && head->next != head)
+    {
+        LL *temp = head;
+        head = head->next;
+        ele = temp->data;
+        tail->next = head;
+        free(temp);
+        temp = NULL;
+    }
+    else if (pos == 1 && head->next == head)
+    {
+        ele = head->data;
+        free(head);
+        head = NULL;
+        tail = NULL;
+    }
+    else
+    {
+        LL *prev = NULL;
+        LL *temp = head;
+        int i;
+        for (i = 2; i <= pos; i++)
+        {
+            prev = temp;
+            temp = temp->next;
+        }
+        prev->next = temp->next;
+        ele = temp->data;
+        if (temp == tail)
+        {
+            tail = prev;
+        }
+        free(temp);
+        temp = NULL;
+    }
+    return ele;
+}
+
+void display()
+{
+    LL *temp = head;
+    printf("LL elements are:  ");
+    while (temp != tail)
+    {
+        printf("%d\t", temp->data);
+        temp = temp->next;
+    }
+    printf("%d\tNULL\n", temp->data);
+}
+
+
+void main()
+{
+    int pos;
+    int element;
+    int delele;
+    int delbackele;
+    int delrand;
+    int choice;
+    while (1)
+    {
+        printf("Press\n1.Insert at Front\n2.Insert at Back\n3.Delete at Front\n4.Delete at Back\n5.Insert At Given Position\n6.Delete From Given Position\n7.Display\n8.Exit\n");
+        scanf("%d", &choice);
+        switch (choice)
+        {
+        case 1:
+            insertFront();
+            break;
+
+        case 2:
+            insertBack();
+            break;
+
+        case 3:
+            delele = deleteFront();
+            printf("Deleted element is %d\n", delele);
+            break;
+
+        case 4:
+            delbackele = deleteBack();
+            printf("Deleted element is %d\n", delbackele);
+            break;
+
+        case 5:
+            printf("Enter element and position\n");
+            scanf("%d%d", &element, &pos);
+            InsertAtPos(pos, element);
+            break;
+
+        case 6:
+            printf("Enter position\n");
+            scanf("%d", &pos);
+            delrand = deleteAtPos(pos);
+            printf("Deleted element is %d\n", delrand);
+            break;
+
+        case 7:
+            display();
+            break;
+
+        case 8:
+            exit(0);
+
+        default:
+            printf("Enter valid choice\n");
+        }
+    }
+}
+
