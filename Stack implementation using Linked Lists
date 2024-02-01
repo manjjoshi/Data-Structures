@@ -1,0 +1,124 @@
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+
+typedef struct Node
+{
+    int data;
+    struct Node * next; 
+}LLStack;
+
+LLStack * head=NULL;
+
+struct Node * createNode(int element)
+{
+    LLStack * new=(struct Node *)malloc(sizeof(LLStack));
+    if(new==NULL)
+    {
+        printf("Memory cannot be allocated\n");
+        exit(0);
+    }
+    else
+    {
+        new->data=element;
+        new->next=NULL;
+    }
+    return new;
+}
+
+void push()
+{
+    int ele;
+    printf("Enter element to be inserted in stack\n");
+    scanf("%d",&ele);
+    LLStack * nn=createNode(ele);
+    if(head==NULL)
+    {
+        head=nn;
+    }
+    else
+    {
+        nn->next=head;
+        head=nn;
+    }
+}
+
+int pop()
+{
+    int ele;
+    if(head==NULL)
+    {
+        printf("LL and Stack are empty\n");
+    }
+    else
+    {
+        if(head->next==NULL)
+        {
+            ele=head->data;
+            free(head);
+            head=NULL;
+        }
+        else
+        {
+            LLStack * temp=head;
+            head=head->next;
+            ele=temp->data;
+            free(temp);
+            temp=NULL;
+        }
+    }
+    return ele;
+}
+
+void display()
+{
+    if(head==NULL)
+    {
+        printf("LL and Stack are empty\n");
+    }
+    else
+    {
+        LLStack * temp=head;
+        printf("LL elements are\n");
+        while(temp!=NULL)
+        {
+            printf("%d\t",temp->data);
+            printf("%p->",temp);
+            temp=temp->next;
+        }
+        printf("\n");
+        temp=head;
+        printf("Stack elements are\n");
+        while(temp!=NULL)
+        {
+            printf("%d\t",temp->data);
+            temp=temp->next;
+        }
+        printf("\n");
+    }
+}
+
+void main()
+{
+    int choice;
+    int ele;
+    while(1)
+    {
+        printf("Press \n 1.Push\n2.Pop\n3.Display\n4.Exit\n");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1: push();
+                    break;
+            case 2: ele=pop();
+                    printf("Popped element %d\n",ele);
+                    break;
+                    
+            case 3: display();
+                    break;
+            case 4: exit(0);
+                    
+            default: ("Enter valid choice");
+        }
+    }
+}
