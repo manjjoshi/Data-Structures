@@ -1,0 +1,128 @@
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+
+typedef struct Node
+{
+    int data;
+    struct Node * next; 
+}LLQueue;
+
+LLQueue * head=NULL;
+
+struct Node * createNode(int element)
+{
+    LLQueue * new=(struct Node *)malloc(sizeof(LLQueue));
+    if(new==NULL)
+    {
+        printf("Memory cannot be allocated\n");
+        exit(0);
+    }
+    else
+    {
+        new->data=element;
+        new->next=NULL;
+    }
+    return new;
+}
+
+void enqueue()
+{
+    int ele;
+    printf("Enter element to be inserted in queue\n");
+    scanf("%d",&ele);
+    LLQueue * nn=createNode(ele);
+    if(head==NULL)
+    {
+        head=nn;
+    }
+    else
+    {
+        LLQueue * temp=head;
+        while(temp->next!=NULL)
+        {
+            temp=temp->next;
+        }
+        temp->next=nn;
+    }
+}
+
+int dequeue()
+{
+    int ele;
+    if(head==NULL)
+    {
+        printf("LL and Queue are empty\n");
+    }
+    else
+    {
+        if(head->next==NULL)
+        {
+            ele=head->data;
+            free(head);
+            head=NULL;
+        }
+        else
+        {
+            LLQueue * temp=head;
+            head=head->next;
+            ele=temp->data;
+            free(temp);
+            temp=NULL;
+        }
+    }
+    return ele;
+}
+
+void display()
+{
+    if(head==NULL)
+    {
+        printf("LL and Queue are empty\n");
+    }
+    else
+    {
+        LLQueue * temp=head;
+        printf("LL elements are\n");
+        while(temp!=NULL)
+        {
+            printf("%d\t",temp->data);
+            printf("%p->",temp);
+            temp=temp->next;
+        }
+        printf("\n");
+        printf("Queue elements are\n");
+        temp=head;
+        while(temp!=NULL)
+        {
+            printf("%d\t",temp->data);
+            temp=temp->next;
+        }
+        printf("\n");
+    }
+}
+
+void main()
+{
+    int choice;
+    int ele;
+    while(1)
+    {
+        printf("Press \n 1.Enqueue\n2.Dequeue\n3.Display\n4.Exit\n");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1: enqueue();
+                    break;
+            case 2: ele=dequeue();
+                    printf("Deleted element %d\n",ele);
+                    break;
+                    
+            case 3: display();
+                    break;
+            case 4: exit(0);
+                    
+            default: ("Enter valid choice");
+        }
+    }
+}
