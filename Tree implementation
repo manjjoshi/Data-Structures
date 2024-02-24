@@ -1,0 +1,143 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct Node
+{
+    int data;
+    struct Node * left;
+    struct Node * right;
+}BST;
+BST * root=NULL;
+
+struct Node * createNode(int element)
+{
+    BST * new=(struct Node *)malloc(sizeof(BST));
+    if(new==NULL)
+    {
+        printf("Memory cannot be allocated\n");
+        exit(0);
+    }
+    else
+    {
+        new->data=element;
+        new->left=NULL;
+        new->right=NULL;
+    }
+    return new;
+}
+
+struct Node * insertBST(BST * node,int num)
+{
+    if(node==NULL)
+    {
+        node=createNode(num);
+    }
+    else if(num>=node->data)
+    {
+        node->right=insertBST(node->right,num);
+    }
+    else if(num<node->data)
+    {
+        node->left=insertBST(node->left,num);
+    }
+    return node;
+}
+
+void inorder(struct Node * node)
+{
+    if(node!=NULL)
+    {
+        inorder(node->left);
+        printf("%d\t",node->data);
+        inorder(node->right);
+    }
+}
+void preorder(struct Node * node)
+{
+    if(node!=NULL)
+    {
+        printf("%d\t",node->data);
+        preorder(node->left);
+        preorder(node->right);
+    }
+}
+void postorder(struct Node * node)
+{
+    if(node!=NULL)
+    {
+        postorder(node->left);
+        postorder(node->right);
+        printf("%d\t",node->data);
+    }
+}
+
+void display()
+{
+    printf("Inorder:\n");
+    inorder(root);
+    printf("preorder:\n");
+    preorder(root);
+    printf("postorder:\n");
+    postorder(root);
+}
+
+int immPre(BST *node)
+{
+    BST *temp1 = node->left;
+    if (temp1 == NULL) {
+        printf("No immediate predecessor\n");
+        return -1;
+    }
+    while (temp1->right != NULL) {
+        temp1 = temp1->right;
+    }
+    return temp1->data;
+}
+
+int immSuc(BST *node)
+{
+    BST *temp2 = node->right;
+    if (temp2 == NULL) {
+        printf("No immediate successor\n");
+        return -1;
+    }
+    while (temp2->left != NULL) {
+        temp2 = temp2->left;
+    }
+    return temp2->data;
+}
+
+
+void main()
+{
+    int ele;
+    int choice;
+    while(1)
+    {
+        printf("Press\n1.Insert\n2.Display\n3.Immediate Predecessor\n4.Immediate Successor\n");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1: printf("Enter element to be inserted\n");
+                    scanf("%d",&ele);
+                    root=insertBST(root,ele);
+                    break;
+                   
+            case 2: display();
+                    break;
+                   
+            case 3: printf("Immediate predecessor is:\n");
+                    int a=immPre(root);
+                    printf("%d",a);
+                    break;
+                   
+            case 4: printf("Immediate Successor is:\n");
+                    int b=immSuc(root);
+                    printf("%d",b);
+                    break;
+                   
+            default: printf("Enter valid choice:\n");
+           
+        }
+    }
+}
