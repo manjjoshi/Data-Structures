@@ -1,0 +1,18 @@
+bool has_cycle(SinglyLinkedListNode* head) {
+    if (head == NULL || head->next == NULL) {
+        return false; 
+    }
+
+    SinglyLinkedListNode* current = head;
+    SinglyLinkedListNode* temp = head->next;
+
+    while (temp != NULL && temp->next != NULL) {
+        if (current == temp){
+            return true; // Cycle detected
+        }
+        current = current->next;
+        temp = temp->next->next;
+    }
+
+    return false; 
+}
