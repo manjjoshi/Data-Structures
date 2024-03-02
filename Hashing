@@ -1,0 +1,99 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+#define N 30
+
+typedef struct employee_record
+{
+    int key;
+} EmployeeRecord;
+
+typedef struct hash_table
+{
+    EmployeeRecord* employee;
+} HT[N];
+
+void display(HT ht)
+{
+    for (int i = 0; i < N; i++)
+    {
+        printf("Index: %d\t", i);
+        if (ht[i].employee != NULL)
+            printf("Key: %d\n", ht[i].employee->key);
+        else
+            printf("Empty\n");
+    }
+}
+
+int insert(HT ht, EmployeeRecord* emp, int type)
+{
+    int in = emp->key % N;
+    for (int i = 0; i < N; i++)
+    {
+        if (ht[in].employee == NULL)
+        {
+            ht[in].employee = emp;
+            return in;
+        }
+        else
+        {
+            if (type == 1) 
+                in = (in + 1) % N;
+            else if (type == 2)
+                in = (in + i * i) % N;
+            else if (type == 3)
+            {
+                int in_dash = 1 + (emp->key % (N - 2));
+                in = (in + in_dash) % N;
+            }
+        }
+    }
+    return -1; 
+}
+
+void main()
+{
+    HT ht;
+    for (int j = 0; j < N; j++)
+    {
+        ht[j].employee = NULL;
+    }
+    
+    int keys[] = {1234, 5678, 9876, 5432, 8765, 4321};
+    for (int i = 0; i < 6; i++)
+    {
+        EmployeeRecord* new_emp = (EmployeeRecord*)malloc(sizeof(EmployeeRecord));
+        new_emp->key = keys[i];
+        int index = insert(ht, new_emp, 1); 
+        if (index != -1) {
+            printf("Inserted employee with key %d at index %d\n", new_emp->key, index);
+        }
+    }
+    printf("After linear probing:\n");
+    display(ht);
+    
+    for (int i = 0; i < 6; i++)
+    {
+        EmployeeRecord* new_emp = (EmployeeRecord*)malloc(sizeof(EmployeeRecord));
+        new_emp->key = keys[i];
+        int index = insert(ht, new_emp, 2);
+        if (index != -1) {
+            printf("Inserted employee with key %d at index %d\n", new_emp->key, index);
+        }
+    }
+    printf("After quadratic probing:\n");
+    display(ht);
+    
+    for (int i = 0; i < 6; i++)
+    {
+        EmployeeRecord* new_emp = (EmployeeRecord*)malloc(sizeof(EmployeeRecord));
+        new_emp->key = keys[i];
+        int index = insert(ht, new_emp, 3); 
+        if (index != -1) {
+            printf("Inserted employee with key %d at index %d\n", new_emp->key, index);
+        }
+    }
+    printf("After double hashing:\n");
+    display(ht);
+    
+}
